@@ -1,0 +1,17 @@
+C:\Users\mcampa\Documents\Marissa\Programming\Bulky\Bulky.DataAccess\bin\Debug\net7.0\Bulky.DataAccess.deps.json
+C:\Users\mcampa\Documents\Marissa\Programming\Bulky\Bulky.DataAccess\bin\Debug\net7.0\Bulky.DataAccess.runtimeconfig.json
+C:\Users\mcampa\Documents\Marissa\Programming\Bulky\Bulky.DataAccess\bin\Debug\net7.0\Bulky.DataAccess.dll
+C:\Users\mcampa\Documents\Marissa\Programming\Bulky\Bulky.DataAccess\bin\Debug\net7.0\Bulky.DataAccess.pdb
+C:\Users\mcampa\Documents\Marissa\Programming\Bulky\Bulky.DataAccess\bin\Debug\net7.0\Bulky.Models.dll
+C:\Users\mcampa\Documents\Marissa\Programming\Bulky\Bulky.DataAccess\bin\Debug\net7.0\Bulky.Models.pdb
+C:\Users\mcampa\Documents\Marissa\Programming\Bulky\Bulky.DataAccess\obj\Debug\net7.0\Bulky.DataAccess.csproj.AssemblyReference.cache
+C:\Users\mcampa\Documents\Marissa\Programming\Bulky\Bulky.DataAccess\obj\Debug\net7.0\Bulky.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mcampa\Documents\Marissa\Programming\Bulky\Bulky.DataAccess\obj\Debug\net7.0\Bulky.DataAccess.AssemblyInfoInputs.cache
+C:\Users\mcampa\Documents\Marissa\Programming\Bulky\Bulky.DataAccess\obj\Debug\net7.0\Bulky.DataAccess.AssemblyInfo.cs
+C:\Users\mcampa\Documents\Marissa\Programming\Bulky\Bulky.DataAccess\obj\Debug\net7.0\Bulky.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\mcampa\Documents\Marissa\Programming\Bulky\Bulky.DataAccess\obj\Debug\net7.0\Bulky.DataAccess.csproj.CopyComplete
+C:\Users\mcampa\Documents\Marissa\Programming\Bulky\Bulky.DataAccess\obj\Debug\net7.0\Bulky.DataAccess.dll
+C:\Users\mcampa\Documents\Marissa\Programming\Bulky\Bulky.DataAccess\obj\Debug\net7.0\refint\Bulky.DataAccess.dll
+C:\Users\mcampa\Documents\Marissa\Programming\Bulky\Bulky.DataAccess\obj\Debug\net7.0\Bulky.DataAccess.pdb
+C:\Users\mcampa\Documents\Marissa\Programming\Bulky\Bulky.DataAccess\obj\Debug\net7.0\Bulky.DataAccess.genruntimeconfig.cache
+C:\Users\mcampa\Documents\Marissa\Programming\Bulky\Bulky.DataAccess\obj\Debug\net7.0\ref\Bulky.DataAccess.dll
