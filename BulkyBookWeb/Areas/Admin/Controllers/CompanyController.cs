@@ -30,43 +30,43 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
 		// GET
 		public IActionResult Upsert(int? id)
 		{
-			Company company = new Company();
+			
 
 			if (id == null || id == 0)
 			{
 				// create
-				return View(company);
+				return View(new Company());
 			}
 			else
 			{
 				// update
-				company = _unitOfWork.Company.Get(u => u.Id == id);
-				return View(company);
+				Company companyObj = _unitOfWork.Company.Get(u => u.Id == id);
+				return View(companyObj);
 			}
 		}
 
 		// POST
 		[HttpPost]
-		public IActionResult Upsert(Company company)
+		public IActionResult Upsert(Company companyObj)
 		{
 			if (ModelState.IsValid)
 			{
 				string message = "";
-				if (company.Id == 0)
+				if (companyObj.Id == 0)
 				{
-					_unitOfWork.Company.Add(company);
+					_unitOfWork.Company.Add(companyObj);
 					message = "Company created successfully";
 				}
 				else
 				{
-					_unitOfWork.Company.Update(company);
+					_unitOfWork.Company.Update(companyObj);
 					message = "Company updated successfully";
 				}
 				_unitOfWork.Save();
 				TempData["success"] = message;
 				return RedirectToAction("Index");
 			}
-			return View(company);
+			return View(companyObj);
 		}
 
 		#region API CALLS
