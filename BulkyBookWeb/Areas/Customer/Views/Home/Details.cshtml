@@ -1,6 +1,7 @@
 ﻿@model ShoppingCart
 
 <form method="post">
+    <input hidden asp-for="ProductId" />
     <div class="card shadow border-0 mt-4 mb-4">
         <div class="card-header bg-secondary bg-gradient text-light py-4">
             <div class="row">
@@ -73,11 +74,11 @@
                         <div class="row pl-2 mb-3">
                             <div class="col-md-4">
                                 <div class="input-group mb-3">
-                                    <span asp-for="Count" class="input-group-text bg-primary text-white border-0 fw-semibold"
+                                    <span class="input-group-text bg-primary text-white border-0 fw-semibold"
                                           id="inputGroup-sizing-default">
                                         Count
                                     </span>
-                                    <input type="number" value="1" class="form-control text-end"
+                                    <input asp-for="Count" type="number" value="1" class="form-control text-end"
                                            aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
 
                                 </div>
