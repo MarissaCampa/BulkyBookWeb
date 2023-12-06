@@ -40,6 +40,48 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             return View(ShoppingCartVM);
         }
 
+        public IActionResult Plus(int cartId)
+        {
+            ShoppingCart cartObj = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId);
+            cartObj.Count += 1;
+            _unitOfWork.ShoppingCart.Update(cartObj);
+            _unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Minus(int cartId)
+        {
+            ShoppingCart cartObj = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId);
+            if (cartObj != null)
+            {
+                cartObj.Count -= 1;
+                if (cartObj.Count <= 0)
+                {
+                    //delete cart from list
+                    _unitOfWork.ShoppingCart.Remove(cartObj);
+                }
+                else
+                {
+                    _unitOfWork.ShoppingCart.Update(cartObj);
+                }
+                _unitOfWork.Save();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Remove(int cartId)
+        {
+            ShoppingCart cartObj = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId);
+            if (cartObj != null )
+            {
+                _unitOfWork.ShoppingCart.Remove(cartObj);
+                _unitOfWork.Save();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        #region Local Methods
         private double GetPriceBasedOnQuantity(ShoppingCart shoppingCart)
         {
             if (shoppingCart.Count <= 50)
@@ -55,5 +97,6 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
                 return shoppingCart.Product.Price100;
             }
         }
+        #endregion
     }
 }
