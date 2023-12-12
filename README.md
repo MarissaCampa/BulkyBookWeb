@@ -1,6 +1,9 @@
 # BulkyBookWeb
 This project is an E-commerce website for buying and selling books. Developed in .NET Core 7 using C# and the MVC architecture.
 
+### Home Page
+![image](https://github.com/MarissaCampa/BulkyBookWeb/assets/3021010/a6edf236-b139-455f-9e3b-b9f48ddf35d3)
+
 ### Products List
 ![image](https://github.com/MarissaCampa/BulkyBookWeb/assets/3021010/43e70227-645a-457b-bb8a-5db5f18a0b0b)
 
