@@ -5,6 +5,7 @@ using BulkyBook.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Stripe;
 using Stripe.Climate;
 using System.Security.Claims;
 
@@ -93,8 +94,35 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
             TempData["success"] = "Order Shipped Successfully";
             return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderHeader.Id });
         }
-        
-		#region API CALLS
+
+		[HttpPost]
+		[Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee)]
+		public IActionResult CancelOrder()
+		{
+			var orderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == OrderVM.OrderHeader.Id);
+
+			if (orderHeader.PaymentStatus == SD.PaymentStatusApproved)
+			{
+				var options = new Stripe.RefundCreateOptions
+				{
+					Reason = RefundReasons.RequestedByCustomer,
+					PaymentIntent = orderHeader.PaymentIntentId
+				};
+                var service = new RefundService();
+                Refund refund = service.Create(options);
+
+				_unitOfWork.OrderHeader.UpdateStatus(orderHeader.Id, SD.StatusCancelled, SD.StatusRefunded);
+            }
+			else
+			{
+                _unitOfWork.OrderHeader.UpdateStatus(orderHeader.Id, SD.StatusCancelled, SD.StatusCancelled);
+            }
+            _unitOfWork.Save();
+            TempData["success"] = "Order Cancelled Successfully";
+            return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderHeader.Id });
+        }
+
+        #region API CALLS
         [HttpGet]
 		public IActionResult GetAll(string status)
 		{

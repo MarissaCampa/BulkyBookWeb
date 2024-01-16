@@ -252,7 +252,8 @@
                                     Model.OrderHeader.OrderStatus != SD.StatusCancelled &&
                                     Model.OrderHeader.OrderStatus != SD.StatusShipped)
                                 {
-                                    <button type="submit" class="btn btn-danger form-control my-1" value="Cancel Order">Cancel Order</button>
+                                    <button type="submit" asp-action="CancelOrder" 
+                                        class="btn btn-danger form-control my-1" value="Cancel Order">Cancel Order</button>
                                 }
                             }
                         </div>
@@ -262,14 +263,6 @@
         </div>
     </div>
 </form>
-
-
-@* @section Scripts {
-    @{
-        <partial name="_ValidationScriptsPartial" />
-    }
-}
- *@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
