@@ -28,6 +28,8 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+            HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId).Count());
+
             ShoppingCartVM = new()
             {
                 ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId,
@@ -202,13 +204,14 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
 
         public IActionResult Minus(int cartId)
         {
-            ShoppingCart cartObj = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId);
+            ShoppingCart cartObj = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId, tracked: true);
             if (cartObj != null)
             {
                 cartObj.Count -= 1;
                 if (cartObj.Count <= 0)
                 {
                     //delete cart from list
+                    HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == cartObj.ApplicationUserId).Count() - 1);
                     _unitOfWork.ShoppingCart.Remove(cartObj);
                 }
                 else
@@ -222,9 +225,10 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
 
         public IActionResult Remove(int cartId)
         {
-            ShoppingCart cartObj = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId);
+            ShoppingCart cartObj = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId, tracked: true);
             if (cartObj != null )
             {
+                HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == cartObj.ApplicationUserId).Count() - 1);
                 _unitOfWork.ShoppingCart.Remove(cartObj);
                 _unitOfWork.Save();
             }
