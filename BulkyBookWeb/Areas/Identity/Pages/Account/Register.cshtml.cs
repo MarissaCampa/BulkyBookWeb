@@ -117,7 +117,6 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
             public string Name { get; set; }
             [Display(Name = "Street Address")]
             public string? StreetAddress { get; set; }
-
             public string? City { get; set; }
             public string? State { get; set; }
             [Display(Name = "Postal Code")]
@@ -215,7 +214,14 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        if (User.IsInRole(SD.Role_Admin))
+                        {
+                            TempData["success"] = "New User Created Successfully";
+                        }
+                        else
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                        }
                         return LocalRedirect(returnUrl);
                     }
                 }
