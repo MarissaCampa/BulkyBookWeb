@@ -8,6 +8,7 @@ using BulkyBook.Utility;
 using Microsoft.Extensions.Options;
 using Stripe;
 using BulkyBook.DataAccess.DbInitializer;
+using Azure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,20 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DbContext")));
 
-builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+    builder.Services.AddAuthentication().AddFacebook(option => {
+        option.AppId = builder.Configuration.GetSection("FacebookApp")["AppId"];
+        option.AppSecret = builder.Configuration.GetSection("FacebookApp")["AppSecret"];
+    });
+}
+else
+{
+    builder.Configuration.AddAzureKeyVault(
+            new Uri($"https://booksvault.vault.azure.net/"),
+            new DefaultAzureCredential());
+}
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 builder.Services.ConfigureApplicationCookie(options =>
@@ -24,11 +38,6 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = $"/Identity/Account/Login";
     options.LogoutPath = $"/Identity/Account/Logout";
     options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
-});
-
-builder.Services.AddAuthentication().AddFacebook(option => {
-    option.AppId = builder.Configuration.GetSection("FacebookApp")["AppId"];
-    option.AppSecret = builder.Configuration.GetSection("FacebookApp")["AppSecret"];
 });
 
 builder.Services.AddDistributedMemoryCache();
