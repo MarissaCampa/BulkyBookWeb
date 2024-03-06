@@ -20,6 +20,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+    StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
     builder.Services.AddAuthentication().AddFacebook(option => {
         option.AppId = builder.Configuration.GetSection("FacebookApp")["AppId"];
         option.AppSecret = builder.Configuration.GetSection("FacebookApp")["AppSecret"];
@@ -65,7 +66,6 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
