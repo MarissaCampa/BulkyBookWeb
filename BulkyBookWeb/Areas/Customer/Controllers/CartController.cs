@@ -141,11 +141,11 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
                 else
                     domain = "https://books-shop.azurewebsites.net/"; ;
 
-                var options = new Stripe.Checkout.SessionCreateOptions
+                var options = new SessionCreateOptions
                 {
                     SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
                     CancelUrl = domain + "customer/cart/index",
-                    LineItems = new List<Stripe.Checkout.SessionLineItemOptions>(),
+                    LineItems = new List<SessionLineItemOptions>(),
 					Mode = "payment",
 				};
 
