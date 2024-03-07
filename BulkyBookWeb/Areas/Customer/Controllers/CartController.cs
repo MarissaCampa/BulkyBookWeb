@@ -139,9 +139,9 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
                 if (_env.IsDevelopment())
                     domain = "https://localhost:44355/";
                 else
-                    domain = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/";
+                    domain = "https://books-shop.azurewebsites.net/"; ;
 
-                var options = new Stripe.Checkout.SessionCreateOptions
+                var options = new SessionCreateOptions
                 {
                     SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
                     CancelUrl = domain + "customer/cart/index",
