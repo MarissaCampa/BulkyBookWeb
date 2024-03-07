@@ -17,15 +17,13 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
 	public class OrderController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
-        private readonly IWebHostEnvironment _env;
 
 		[BindProperty]
 		public OrderVM OrderVM { get; set; }
 
-		public OrderController(IUnitOfWork unitOfWork, IWebHostEnvironment env)
+		public OrderController(IUnitOfWork unitOfWork)
 		{
 			_unitOfWork = unitOfWork;
-            _env = env;
 		}
 
 		public IActionResult Index()
@@ -136,12 +134,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
 				.GetAll(u => u.OrderHeaderId == OrderVM.OrderHeader.Id, includeProperties: "Product");
 
             // stripe logic
-            string domain = "";
-            if (_env.IsDevelopment())
-                domain = "https://localhost:44355/";
-            else
-                domain = "https://books-shop.azurewebsites.net/"; ;
-
+            var domain = "https://localhost:44355/";
             var options = new Stripe.Checkout.SessionCreateOptions
             {
                 SuccessUrl = domain + $"admin/order/PaymentOrderConfirmation?orderHeaderId={OrderVM.OrderHeader.Id}",
