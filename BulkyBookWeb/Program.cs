@@ -22,22 +22,20 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
             sqlOptions.EnableRetryOnFailure();
         }));
 
-if (builder.Environment.IsDevelopment())
-{
-    builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
-    StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
-    builder.Services.AddAuthentication().AddFacebook(option => {
-        option.AppId = builder.Configuration.GetSection("FacebookApp")["AppId"];
-        option.AppSecret = builder.Configuration.GetSection("FacebookApp")["AppSecret"];
-    });
-}
-else
+if (!builder.Environment.IsDevelopment())
 {
     builder.Configuration.AddAzureKeyVault(
             new Uri($"https://booksvault.vault.azure.net/"),
             new DefaultAzureCredential());
 }
 
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
+
+builder.Services.AddAuthentication().AddFacebook(option => {
+    option.AppId = builder.Configuration.GetSection("FacebookApp")["AppId"];
+    option.AppSecret = builder.Configuration.GetSection("FacebookApp")["AppSecret"];
+});
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 builder.Services.ConfigureApplicationCookie(options =>
 {
