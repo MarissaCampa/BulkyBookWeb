@@ -17,14 +17,16 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmailSender _emailSender;
+        private readonly IWebHostEnvironment _env;
 
         [BindProperty]
         public ShoppingCartVM ShoppingCartVM { get; set; }
 
-        public CartController(IUnitOfWork unitOfWork, IEmailSender emailSender)
+        public CartController(IUnitOfWork unitOfWork, IEmailSender emailSender, IWebHostEnvironment env)
         {
             _unitOfWork = unitOfWork;
             _emailSender = emailSender;
+            _env = env;
         }
 
         public IActionResult Index()
@@ -133,7 +135,20 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
 			{
                 // regular customer account
                 // stripe logic
-                var domain = "https://localhost:44355/";
+                string domain = "";
+                if (!_env.IsDevelopment())
+                {
+                    // For Azure environment or other deployment environments
+                    domain = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/";
+                }
+                else
+                {
+                    // For local development environment
+                    var serverAddress = "localhost";
+                    var serverPort = HttpContext.Connection.LocalPort;
+                    domain = $"{HttpContext.Request.Scheme}://{serverAddress}:{serverPort}/";
+                }
+
                 var options = new Stripe.Checkout.SessionCreateOptions
                 {
                     SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
