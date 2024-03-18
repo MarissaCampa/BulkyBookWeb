@@ -34,8 +34,21 @@
                             <div class="col-12  col-lg-5 text-center row">
                                 <div class="col-3 text-md-right pt-2 pt-md-4">
                                     <h6 class="fw-semibold">
-                                        @item.Product.Price.ToString("c")
-                                        <span class="text-muted">&nbsp;x&nbsp;</span>@item.Count
+                                        @if(item.Count <= 50)
+                                        {
+                                            @item.Product.Price.ToString("c")
+                                            <span class="text-muted">&nbsp;x&nbsp;</span>@item.Count
+                                        }
+                                        else if(item.Count > 50 && item.Count <= 100)
+                                        {
+                                            @item.Product.Price50.ToString("c")
+                                            <span class="text-muted">&nbsp;x&nbsp;</span>@item.Count
+                                        }
+                                        else
+                                        {
+                                            @item.Product.Price100.ToString("c")
+                                            <span class="text-muted">&nbsp;x&nbsp;</span>@item.Count
+                                        }
                                     </h6>
                                 </div>
                                 <div class="col-6 col-sm-4 col-lg-6 pt-2">
