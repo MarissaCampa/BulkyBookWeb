@@ -4,11 +4,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BulkyBook.Models.ViewModels
 {
-	public class UserVM
+	public class RoleManagementVM
 	{
-		public ApplicationUser User { get; set; }
-		[ValidateNever]
-		public IEnumerable<SelectListItem> CompanyList { get; set; }
+		public ApplicationUser ApplicationUser { get; set; }
 		public IEnumerable<SelectListItem> RoleList { get; set; }
+		public IEnumerable<SelectListItem> CompanyList { get; set; }
 	}
 }
