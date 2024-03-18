@@ -8,6 +8,7 @@ using BulkyBook.Models.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using BulkyBook.DataAccess.Repository;
 
 namespace BulkyBookWeb.Areas.Admin.Controllers
 {
@@ -26,6 +27,23 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
         {
 			return View();
         }
+
+		public IActionResult RoleManagement(string id)
+		{
+			UserVM userVM = new()
+			{
+				User = _db.ApplicationUsers.Include(u => u.Company).SingleOrDefault(u => u.Id == id),
+				CompanyList = _db.Companies
+				.GetAll().Select(u => new SelectListItem
+				{
+					Text = u.Name,
+					Value = u.Id.ToString()
+				}),
+				Product = new Product()
+			};
+
+			return View();
+		}
 
 		#region API CALLS
 		[HttpGet]
