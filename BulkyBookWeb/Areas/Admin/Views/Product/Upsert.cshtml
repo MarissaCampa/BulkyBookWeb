@@ -82,7 +82,15 @@
 					</div>
 				</div>
 				<div class="col-2">
-					@* <img src="~/@Model.Product.ImageUrl" width="100%" style="border-radius:5px; border:1px solid #bbb9b9"/> *@
+					@if (Model.Product.ProductImages != null)
+					{
+						foreach (var image in Model.Product.ProductImages)
+						{
+							<div class="border p-1 m-2 text-center">
+								<img src="@image.ImageUrl" width="100%" style="border-radius:5px; border:1px solid #bbb9b9" />
+							</div>
+						}
+					}
 				</div>
 			</div>
 		</form>
@@ -96,7 +104,7 @@
 	<script>
 		tinymce.init({
 			selector: 'textarea',
-			plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons  lists searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+			plugins: 'anchor autolink charmap codesample emoticons  lists searchreplace table visualblocks wordcount',
 			toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align lineheight | tinycomments | checklist numlist bullist indent outdent ',
 			tinycomments_mode: 'embedded',
 			tinycomments_author: 'Author name',
