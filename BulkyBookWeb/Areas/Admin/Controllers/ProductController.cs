@@ -5,7 +5,6 @@ using BulkyBook.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using System.Drawing;
 
 namespace BulkyBookWeb.Areas.Admin.Controllers
@@ -121,28 +120,6 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
 			return View(productVM);
 		}
 
-		public IActionResult DeleteImage(int imageId)
-		{
-			var imageToBeDeleted = _unitOfWork.ProductImage.Get(u => u.Id == imageId);
-			int productId = imageToBeDeleted.ProductId;
-			if (imageToBeDeleted != null)
-			{
-				if (!string.IsNullOrEmpty(imageToBeDeleted.ImageUrl))
-				{
-					var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, imageToBeDeleted.ImageUrl);
-					if (System.IO.File.Exists(oldImagePath))
-					{
-						System.IO.File.Delete(oldImagePath);
-					}
-				}
-				_unitOfWork.ProductImage.Remove(imageToBeDeleted);
-				_unitOfWork.Save();
-
-				TempData["success"] = "Deleted Successfully";
-			}
-			return RedirectToAction(nameof(Upsert), new { id = productId });
-		}
-
 		#region API CALLS
 		[HttpGet]
 		public IActionResult GetAll()
@@ -159,18 +136,14 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
 				return Json(new { success = false, message = "Error while deleting" });
 			}
 
-			string productPath = @"images\product\product-" + id;
-			string finalPath = Path.Combine(_webHostEnvironment.WebRootPath, productPath);
+			//var oldImagePath =
+			//	Path.Combine(_webHostEnvironment.WebRootPath, 
+			//				productToBeDeleted.ImageUrl.TrimStart('\\'));
 
-			if (!Directory.Exists(finalPath))
-			{
-				string[] filePaths = Directory.GetFiles(finalPath);
-                foreach (string filePath in filePaths)
-                {
-					System.IO.File.Delete(filePath);
-                }
-                Directory.Delete(finalPath);
-			}
+			//if (System.IO.File.Exists(oldImagePath))
+			//{
+			//	System.IO.File.Delete(oldImagePath);
+			//}
 
 			_unitOfWork.Product.Remove(productToBeDeleted);
 			_unitOfWork.Save();
