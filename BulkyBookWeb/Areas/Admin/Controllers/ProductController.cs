@@ -106,7 +106,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
 				}
 
 				TempData["success"] = productVM.Product.Id == 0 ? "Product created successfully" : "Product updated successfully";
-				return RedirectToAction("Index");
+				return RedirectToAction(nameof(Upsert), new { id = productVM.Product.Id });
 			}
 			else
 			{
@@ -118,6 +118,29 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
 				});
 			}
 			return View(productVM);
+		}
+
+		public IActionResult DeleteImage(int imageId)
+		{
+			var imageToBeDeleted = _unitOfWork.ProductImage.Get(u => u.Id == imageId);
+			int productId = imageToBeDeleted.ProductId;
+			if (imageToBeDeleted != null) 
+			{
+				if (!string.IsNullOrEmpty(imageToBeDeleted.ImageUrl))
+				{
+					var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, imageToBeDeleted.ImageUrl.TrimStart('\\'));
+
+					if (System.IO.File.Exists(oldImagePath))
+					{
+						System.IO.File.Delete(oldImagePath);
+					}
+				}
+				_unitOfWork.ProductImage.Remove(imageToBeDeleted);
+				_unitOfWork.Save();
+
+				TempData["success"] = "Deleted successfully";
+			}
+			return RedirectToAction(nameof(Upsert), new {id = productId });	
 		}
 
 		#region API CALLS
@@ -144,6 +167,19 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
 			//{
 			//	System.IO.File.Delete(oldImagePath);
 			//}
+
+			string productPath = @"images\product\product-" + id;
+			string finalPath = Path.Combine(_webHostEnvironment.WebRootPath, productPath);
+
+			if (Directory.Exists(finalPath))
+			{
+				string[] filePaths = Directory.GetFiles(finalPath);
+                foreach (var filePath in filePaths)
+                {
+                    System.IO.File.Delete(filePath);
+                }
+                Directory.Delete(finalPath, true);
+			}
 
 			_unitOfWork.Product.Remove(productToBeDeleted);
 			_unitOfWork.Save();
