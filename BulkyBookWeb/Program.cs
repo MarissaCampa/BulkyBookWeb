@@ -39,8 +39,8 @@ builder.Services.AddAuthentication().AddFacebook(option => {
 
 builder.Services.AddAuthentication().AddMicrosoftAccount(option =>
 {
-    option.ClientId = builder.Configuration.GetSection("MicrosoftLogin:ClientId").Get<string>();
-    option.ClientSecret = builder.Configuration.GetSection("MicrosoftLogin:ClientSecret").Get <string>();
+    option.ClientId = builder.Configuration.GetSection("MicrosoftLogin")["ClientId"];
+    option.ClientSecret = builder.Configuration.GetSection("MicrosoftLogin")["ClientSecret"];
 });
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
